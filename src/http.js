@@ -1,10 +1,10 @@
 export async function uploadImage(img,prompt,name) {
   try {
     const response = await fetch(
-      "http://localhost:8800/api/store/imageGeneration",
+      "https://ai-chat-2411.onrender.com/api/store/imageGeneration",
       {
         method: "POST",
-        body: JSON.stringify({ imgUrl: img,prompt:prompt,name:name }),
+        body: JSON.stringify({ imgUrl: img, prompt: prompt, name: name }),
         headers: {
           "Content-Type": "application/json",
         },
@@ -28,7 +28,7 @@ export async function showImage(id) {
   const encodedId = encodeURIComponent(id); // This ensures any special characters, including spaces, are encoded
   try {
     const response = await fetch(
-      `http://localhost:8800/api/store/getImage/${encodedId}`
+      `https://ai-chat-2411.onrender.com/api/store/getImage/${encodedId}`
     );
 
     if (!response.ok) {
