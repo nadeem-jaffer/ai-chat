@@ -5,8 +5,12 @@ import Home from "./components/Home";
 import Error from "./components/Error";
 import Gemini from "./components/Gemini";
 import Azure from "./components/Azure";
+import ImageGeneration from "./components/ImageGeneration";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import Carousel from "./components/Carousel";
 export default function App() {
 
+    const queryClient = new QueryClient();
     const router = createBrowserRouter([
       {
         path: "/",
@@ -16,9 +20,15 @@ export default function App() {
           { path: "/", element: <Home /> },
           { path: "/gemini", element: <Gemini /> },
           { path: "/azure", element: <Azure /> },
+          {path:"/image",element:<ImageGeneration/>},
+          {path:"/history",element:<Carousel/>}
         ],
       },
     ]);
 
-  return <RouterProvider router={router} />;
+  return (
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+    </QueryClientProvider>
+  );
 }
