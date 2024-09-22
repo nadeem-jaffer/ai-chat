@@ -15,7 +15,9 @@ export default function MainNavigation() {
         </li>
         <li>
           <SignedOut>
-            <SignInButton/>
+            <Link to="https://supreme-bat-16.accounts.dev/sign-in?redirect_url=https%3A%2F%2Fai-chat-pi-beryl.vercel.app%2F">
+              <span className="font-bold text-xl">Sign In</span>
+            </Link>
           </SignedOut>
           <SignedIn>
             <UserButton />

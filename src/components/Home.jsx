@@ -63,7 +63,7 @@ export default function Home() {
       <SignedOut>
         <div className="flex mt-10">
           <a
-            href="https://supreme-bat-16.accounts.dev/sign-in?redirect_url=https://ai-chat-pi-beryl.vercel.app"
+            href="https://supreme-bat-16.accounts.dev/sign-in?redirect_url=https%3A%2F%2Fai-chat-pi-beryl.vercel.app%2F"
             className="relative inline-block text-lg group"
           >
             <span className="relative z-10 block px-5 py-3 overflow-hidden font-medium leading-tight text-gray-800 transition-colors duration-300 ease-out border-2 border-gray-900 rounded-lg group-hover:text-white">
