@@ -23,17 +23,15 @@ router.post("/imageGeneration", async (req, res) => {
   }
 });
 
-router.get("/getImage/:id", async (req, res) => {
+router.get("/getImage", async (req, res) => {
   try {
-    const imageId = decodeURIComponent(req.params.id);
-    const getUser = await Image.find({name:imageId});
-    if (!getUser) {
-      return res.status(404).json({ message: "Image not found" });
+    const images = await Image.find();
+    if (images.length === 0) {
+      return res.status(404).json({ message: "No images found" });
     }
-
-    res.status(200).json(getUser);
+    res.status(200).json(images); // This will return an array of image objects
   } catch (err) {
-    res.status(400).json({ error: "Error fetching image", details: err });
+    res.status(500).json({ error: "Error fetching images", details: err });
   }
 });
 
