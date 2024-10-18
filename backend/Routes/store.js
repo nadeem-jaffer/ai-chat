@@ -26,7 +26,7 @@ router.post("/imageGeneration", async (req, res) => {
 router.get("/getImage/:id", async (req, res) => {
   try {
     const imageId = decodeURIComponent(req.params.id);
-    const getUser = await Image.findOne({ name: imageId });
+    const getUser = await Image.find({ name: imageId });
     if (!getUser) {
       return res.status(404).json({ message: "Image not found" });
     }
