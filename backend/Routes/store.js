@@ -3,6 +3,7 @@ const router = express.Router();
 const Image = require("../models/Image");
 
 router.use(express.json());
+
 router.post("/imageGeneration", async (req, res) => {
   try {
     const { name, prompt, imgData, contentType } = req.body;
@@ -33,19 +34,30 @@ router.post("/imageGeneration", async (req, res) => {
 });
 
 router.get("/getImage/:username", async (req, res) => {
-  const { username } = req.params; // Get username from request parameters
+  const { username } = req.params;
   try {
-    const images = await Image.find({ name: username }); // Fetch images for specific user
+    const images = await Image.find({ name: username }); // Find images by username
     if (images.length === 0) {
       return res.status(404).json({ message: "No images found" });
     }
-    res.status(200).json(images); // Return an array of image objects
+
+    // Format the response to ensure imgData is in base64 format and not undefined
+    const imagesWithBase64 = images.map((image) => ({
+      name: image.name,
+      contentType: image.contentType,
+      imgData: image.imgData.toString("base64"), // Convert buffer to base64 string
+    }));
+
+    res.status(200).json(imagesWithBase64);
   } catch (error) {
-    console.error("Error fetching images:", error); // Log any error
+    console.error("Error fetching images:", error);
     res
       .status(500)
       .json({ error: "Error fetching images", details: error.message });
   }
 });
 
+
+
 module.exports = router;
+
