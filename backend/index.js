@@ -6,23 +6,21 @@ const dotenv = require("dotenv");
 const authRoute = require("./Routes/store")
 const cors = require("cors");
 
+dotenv.config();
 
 const app = express();
-dotenv.config();
-app.use(express.json());
 app.use(cors());
 
-const PORT = 8800;
-app.use("/api/store", authRoute);
+app.use(express.json({ limit: '10mb' })); // Increase as needed, e.g., 20mb or more
+
 
 mongoose
-  .connect("mongodb://localhost:27017/yourDatabaseName", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => console.log("Connected to MongoDB"))
-  .catch((error) => console.error("MongoDB connection error:", error));
+  .connect(process.env.MONGO_URL)
+  .then(() => console.log("DB Connected"))
+  .catch((err) => console.log(err));
 
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+app.use("/api/store", authRoute);
+
+app.listen(5000, () => {
+  console.log("Backend is running");
 });
