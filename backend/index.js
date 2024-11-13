@@ -1,3 +1,4 @@
+
 //index.js
 
 const express = require("express");
@@ -9,18 +10,15 @@ const cors = require("cors");
 dotenv.config();
 
 const app = express();
-app.use(cors());
-
-app.use(express.json({ limit: '10mb' })); // Increase as needed, e.g., 20mb or more
-
+app.use(cors()); 
 
 mongoose
   .connect(process.env.MONGO_URL)
   .then(() => console.log("DB Connected"))
   .catch((err) => console.log(err));
 
-app.use("/api/store", authRoute);
+app.use("/api/store",authRoute)
 
-app.listen(5000, () => {
+app.listen(8800, () => {
   console.log("Backend is running");
 });
