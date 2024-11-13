@@ -1,63 +1,43 @@
+
 const express = require("express");
 const router = express.Router();
 const Image = require("../models/Image");
-
 router.use(express.json());
 
 router.post("/imageGeneration", async (req, res) => {
   try {
-    const { name, prompt, imgData, contentType } = req.body;
-
-    console.log("Received data:", req.body); // Log incoming data
-
-    if (!imgData || !contentType) {
-      return res
-        .status(400)
-        .json({ error: "imgData and contentType are required" });
+    if (!req.body.imgUrl) {
+      return res.status(400).json({ error: "imgUrl is required" });
     }
 
-    const imageBuffer = Buffer.from(imgData, "base64");
-
     const newImage = new Image({
-      name,
-      prompt,
-      imgData: imageBuffer,
-      contentType,
+      name:req.body.name,
+      prompt:req.body.prompt,
+      imgUrl: req.body.imgUrl,
     });
 
     const image = await newImage.save();
     res.status(201).json(image);
   } catch (error) {
-    console.error("Error in image generation:", error);
+    console.error("Error in image generation:", error); // Log any error
     res.status(500).json({ error: error.message });
   }
 });
 
-router.get("/getImage/:username", async (req, res) => {
-  const { username } = req.params;
+router.get("/getImage/:id", async (req, res) => {
   try {
-    const images = await Image.find({ name: username }); // Find images by username
-    if (images.length === 0) {
-      return res.status(404).json({ message: "No images found" });
+    const imageId = decodeURIComponent(req.params.id);
+    const getUser = await Image.find({ name: imageId });
+    if (!getUser) {
+      return res.status(404).json({ message: "Image not found" });
     }
-
-    // Format the response to ensure imgData is in base64 format and not undefined
-    const imagesWithBase64 = images.map((image) => ({
-      name: image.name,
-      contentType: image.contentType,
-      imgData: image.imgData.toString("base64"), // Convert buffer to base64 string
-    }));
-
-    res.status(200).json(imagesWithBase64);
-  } catch (error) {
-    console.error("Error fetching images:", error);
-    res
-      .status(500)
-      .json({ error: "Error fetching images", details: error.message });
+    res.status(200).json(getUser);
+  } catch (err) {
+    res.status(400).json({ error: "Error fetching image", details: err });
   }
 });
 
 
 
-module.exports = router;
 
+module.exports = router;
